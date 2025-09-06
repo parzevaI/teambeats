@@ -1,0 +1,16 @@
+.wrapper {
+  max-height: 100%;   /* cap at parent height */
+  overflow: auto;     /* scroll if capped */
+  /* overflow: initial; temporary in previous impl */
+
+  background-color: white;
+  border-radius: 16px;
+  width: 200px;
+  border: 2px solid black;
+
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 8px;
+}
+
