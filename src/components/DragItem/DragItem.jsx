@@ -6,7 +6,7 @@ import { CSS } from '@dnd-kit/utilities'
 import styles from './DragItem.module.css';
 
 function DragItem({ id, label, containerId }) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id,
     data: { containerId },
   });
@@ -15,6 +15,7 @@ function DragItem({ id, label, containerId }) {
     touchAction: 'none',
     userSelect: 'none',
     cursor: 'grab',
+    opacity: isDragging ? 0 : undefined, // hide original while overlay is shown
   };
 
   return (

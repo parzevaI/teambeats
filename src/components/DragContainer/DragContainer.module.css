@@ -3,10 +3,11 @@
   overflow: auto;     /* scroll if capped */
   /* overflow: initial; temporary in previous impl */
 
-  background-color: white;
+  /* background-color: white; */
   border-radius: 16px;
-  width: 200px;
-  border: 2px solid black;
+  width: 250px;
+  color: black;
+  min-height: 120px;
 
   display: flex;
   flex-direction: column;

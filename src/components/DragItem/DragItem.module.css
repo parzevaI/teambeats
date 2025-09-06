@@ -1,6 +1,9 @@
 .wrapper {
-  background: green;
-  border-radius: 16px;
-  padding: 16px;
+  background-color: var(--white);
+  border-radius: 8px;
+  border-top: 3px solid var(--primary);
+  padding: 24px;
+  padding-bottom: 48px;
+  color: black;
 }
 

@@ -9,7 +9,8 @@ function DragContainer({ children, title, id }) {
     id: id,
   });
   const style = {
-    color: isOver ? 'green' : undefined,
+    // color: isOver ? 'green' : undefined,
+    outline: isOver? '3px solid var(--primary)' : undefined,
   };
 
   return (

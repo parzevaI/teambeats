@@ -1,13 +1,14 @@
 'use client';
 import React from "react";
 
-import { DndContext } from '@dnd-kit/core';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
 
 import DragItem from '../../components/DragItem';
 import DragContainer from '../../components/DragContainer';
 import { produce } from 'immer';
 
 import styles from './DragBoard.module.css';
+import dragItemStyles from '../DragItem/DragItem.module.css';
 
 // initial board data: two containers and a few items
 const initialBoard = [
@@ -28,8 +29,16 @@ const initialBoard = [
 
 function DragBoard() {
   const [board, dispatch] = React.useReducer(reducer, initialBoard);
+  const [activeId, setActiveId] = React.useState(null);
+
+  function handleDragStart(event) {
+    setActiveId(event.active.id);
+  }
 
   function handleDragEnd(event) {
+    // clear the active state so the overlay disappears
+    setActiveId(null);
+
     if (!event.over) return; // not dropped in a container
 
     const toContainerId = event.over.id;
@@ -40,8 +49,22 @@ function DragBoard() {
     dispatch({ type: 'MOVE_ITEM', itemId, toContainerId });
   }
 
+  // move the active item out of overflow container
+  const activeItem = React.useMemo(() => {
+    if (!activeId) return null;
+    for (let container of board) {
+      const found = container.items.find((it) => it.id === activeId);
+      if (found) return found;
+    }
+    return null;
+  }, [activeId, board]);
+
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext
+      autoScroll={false}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <main className={styles.main}>
         {board.map(({ title, id, items }) => (
           <DragContainer key={id} title={title} id={id}>
@@ -51,6 +74,13 @@ function DragBoard() {
           </DragContainer>
         ))}
       </main>
+      <DragOverlay>
+        {activeItem ? (
+          <div className={dragItemStyles.wrapper} style={{ cursor: 'grabbing' }}>
+            {activeItem.label}
+          </div>
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
 }
