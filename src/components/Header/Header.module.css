@@ -1,5 +1,8 @@
 .wrapper {
-  background-color: var(--background);
-  height: 50px;
+  background-color: var(--foreground);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.6rem;
+
+  padding: 16px;
 }
 

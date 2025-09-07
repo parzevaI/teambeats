@@ -1,10 +1,14 @@
 .wrapper {
-  max-height: 100%;   /* cap at parent height */
+  max-height: 100%; /* cap at parent height */
   flex-shrink: 0;
 
   border: 1px solid var(--border);
   border-radius: 8px;
   width: 300px;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .title {
@@ -48,14 +52,14 @@
 }
 
 .itemWrapper {
-  max-height: 100%;   /* cap at parent height */
-  overflow: auto;     /* scroll if capped */
-  /* overflow: initial; temporary in previous impl */
+  flex: 1 1 auto;
+  min-height: 0; /* allow shrink within flex column */
+  overflow: auto; /* scroll when content exceeds */
 
   width: 100%;
-  min-height: 120px;
   padding: 16px;
   border-radius: 0 0 8px 8px;
+  min-height: 125px;
 
   display: flex;
   flex-direction: column;

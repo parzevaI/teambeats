@@ -4,7 +4,7 @@ import styles from './Header.module.css';
 function Header() {
   return (
     <header className={styles.wrapper}>
-      <h1></h1>
+      <h1>hello - 2025-09-02</h1>
     </header>
   );
 }

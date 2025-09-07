@@ -10,10 +10,10 @@ import { produce } from 'immer';
 import styles from './DragBoard.module.css';
 import dragItemStyles from '../DragItem/DragItem.module.css';
 
-// initial board data: two containers and a few items
+
 const initialBoard = [
   {
-    title: "things",
+    title: "Things",
     id: crypto.randomUUID(),
     items: [
       { id: crypto.randomUUID(), label: "hello" },
@@ -21,7 +21,17 @@ const initialBoard = [
     ],
   },
   {
-    title: "stuff",
+    title: "Stuff",
+    id: crypto.randomUUID(),
+    items: [],
+  },
+  {
+    title: "More things",
+    id: crypto.randomUUID(),
+    items: [],
+  },
+  {
+    title: "More stuff",
     id: crypto.randomUUID(),
     items: [],
   },
@@ -65,15 +75,29 @@ function DragBoard() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
+
       <main className={styles.main}>
         {board.map(({ title, id, items }) => (
-          <DragContainer key={id} title={title} id={id}>
+          <DragContainer
+            key={id}
+            title={title}
+            id={id}
+            addItem={(label) => {
+              dispatch({
+                type: 'ADD_ITEM',
+                containerId: id,
+                label,
+              })
+            }}
+          >
             {items.map((item) => (
               <DragItem key={item.id} id={item.id} label={item.label} containerId={id} />
             ))}
           </DragContainer>
         ))}
       </main>
+
+      {/* portal to keep dragged items above everything */}
       <DragOverlay>
         {activeItem ? (
           <div className={dragItemStyles.wrapper} style={{ cursor: 'grabbing' }}>
@@ -95,7 +119,7 @@ function reducer(state, action) {
         let itemInd;
 
         for (let containerInd in draft) {
-          itemInd = draft[containerInd].items.findIndex((item) => item.id == action.itemId);
+          itemInd = draft[containerInd].items.findIndex((item) => item.id == action.itemId)
           if (itemInd != -1) {
             fromContainerIndex = containerInd;
             break;
@@ -103,15 +127,25 @@ function reducer(state, action) {
         }
 
         // get item
-        let item = draft[fromContainerIndex].items[itemInd];
+        let item = draft[fromContainerIndex].items[itemInd]
 
 
         // remove from source
-        draft[fromContainerIndex].items.splice(itemInd, 1);
+        draft[fromContainerIndex].items.splice(itemInd, 1)
 
         // add to destination
-        const dest = draft.find((container) => container.id == action.toContainerId);
-        dest.items.push(item);
+        const dest = draft.find((container) => container.id == action.toContainerId)
+        dest.items.push(item)
+      });
+    }
+    case 'ADD_ITEM': {
+      return produce(state, (draft) => {
+        const dest = draft.find((container) => container.id == action.containerId)
+
+        dest.items.push({
+          id: crypto.randomUUID(),
+          label: action.label,
+        })
       });
     }
   }

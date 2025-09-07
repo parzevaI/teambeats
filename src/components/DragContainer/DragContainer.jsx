@@ -4,7 +4,7 @@ import React from "react";
 import { useDroppable } from '@dnd-kit/core';
 import styles from './DragContainer.module.css';
 
-function DragContainer({ children, title, id }) {
+function DragContainer({ children, title, id, addItem }) {
   // dragging
   const {isOver, setNodeRef} = useDroppable({
     id: id,
@@ -25,7 +25,9 @@ function DragContainer({ children, title, id }) {
       <form
         onSubmit={event => {
           event.preventDefault()
+
           // handle submit
+          addItem(cardValue)
           setCardValue('')
         }}
         className={styles.addCardWrapper}
